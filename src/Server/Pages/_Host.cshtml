@@ -1,0 +1,37 @@
+﻿@page "/"
+@namespace ReactBffProxy.Server.Pages
+@using System.Net;
+@using NetEscapades.AspNetCore.SecurityHeaders;
+@inject IHostEnvironment hostEnvironment
+@inject IConfiguration config
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiForgery
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+
+    var source = "";
+    if (hostEnvironment.IsDevelopment())
+    {
+        var httpClient = new HttpClient();
+        source = await httpClient.GetStringAsync($"{config["SpaDevServerUrl"]}/index.html");    
+    }
+    else
+    {
+        source = System.IO.File.ReadAllText($"{System.IO.Directory.GetCurrentDirectory()}{@"\wwwroot\index.html"}");
+    }
+
+    var nonce = HttpContext.GetNonce();
+
+    var xsrf = antiForgery.GetAndStoreTokens(HttpContext);
+    var requestToken = xsrf.RequestToken;
+
+    // could also inject nonce into html / meta tag
+
+    Response.Cookies.Append("CSP-Nonce", nonce, new CookieOptions() { HttpOnly = false, IsEssential = true, Secure = true, SameSite = SameSiteMode.Strict });
+    Response.Cookies.Append("XSRF-RequestToken", requestToken ?? "", new CookieOptions() { HttpOnly = false, IsEssential = true, Secure = true, SameSite = SameSiteMode.Strict });
+}
+
+@Html.Raw(source)
+
+
+

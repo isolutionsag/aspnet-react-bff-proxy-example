@@ -1,0 +1,31 @@
+{
+  "extends": [
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "prettier"
+  ],
+  "parserOptions": {
+    "project": ["./tsconfig.json"]
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "ignorePatterns": ["vite.config.ts", "service-worker.js"],
+  "rules": {
+    "import/no-default-export": "error",
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "react/react-in-jsx-scope": "off",
+    "prefer-destructuring": "off"
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
