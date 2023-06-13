@@ -43,7 +43,7 @@ public static class ServiceCollectionExtension
         services.AddMicrosoftIdentityWebAppAuthentication(configuration)
             .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
             .AddMicrosoftGraph(defaultScopes: scopes)
-            .AddDistributedTokenCaches();
+            .AddInMemoryTokenCaches();
 
         services.AddAuthorization(options =>
         {

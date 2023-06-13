@@ -16,7 +16,7 @@ public static class SecurityHeadersDefinitions
             .AddReferrerPolicyStrictOriginWhenCrossOrigin()
             .AddCrossOriginOpenerPolicy(builder => builder.SameOrigin())
             .AddCrossOriginResourcePolicy(builder => builder.SameOrigin())
-            .AddCrossOriginEmbedderPolicy(builder => builder.RequireCorp()) // remove for dev if using hot reload
+            .AddCrossOriginEmbedderPolicy(builder => builder.RequireCorp())
             .AddContentSecurityPolicy(builder =>
             {
                 builder.AddObjectSrc().None();
@@ -45,8 +45,7 @@ public static class SecurityHeadersDefinitions
                 builder.AddScriptSrc()
                     .Self()
                     .WithHash256("8ZgGo/nOlaDknQkDUYiedLuFRSGJwIz6LAzsOrNxhmU=") // TODO: only in development                        
-                    .WithHash256("/AO8vAagk08SqUGxY96ci/dGyTDsuoetPOJYMn7sc+E=") // VitePWA
-                    .WithNonce();
+                    .WithHash256("/AO8vAagk08SqUGxY96ci/dGyTDsuoetPOJYMn7sc+E="); // VitePWA
             })
             .RemoveServerHeader()
             .AddPermissionsPolicy(builder =>

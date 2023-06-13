@@ -16,6 +16,7 @@ import { router } from "./router";
 import { ServiceContextProvider } from "./ServiceContextProvider";
 import { getCookie } from "./getCookie";
 
+// Get the nonce for emotion/MUI
 const nonce = getCookie("CSP-Nonce");
 
 const cache = createCache({
