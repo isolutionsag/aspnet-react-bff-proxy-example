@@ -10,7 +10,7 @@ This enables the use of unified security headers in development and production, 
 
 1. Open the solution and launch the server app in Kestrel.
 1. Run the client app at /src/Client by running `npm install` then `npm run dev`
-1. Access the Application at `localhost:5001`
+1. Access the application at `localhost:5001`
 
 ### production mode
 
