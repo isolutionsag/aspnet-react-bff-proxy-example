@@ -1,5 +1,6 @@
 using AspNetCore.Proxy;
 using Azure.Identity;
+using NetEscapades.AspNetCore.SecurityHeaders.Infrastructure;
 using ReactBffProxy.Server;
 using ReactBffProxy.Server.Extensions;
 using ReactBffProxy.Services;
@@ -53,10 +54,12 @@ try
     var configuration = builder.Configuration;
     var env = builder.Environment;
 
+
     builder.Services.AddInfrastructure()
     .AddSecurity(configuration)
     .AddSwagger(configuration)
-    .AddScoped<MsGraphService>();
+    .AddScoped<MsGraphService>()
+    .AddTransient<ICustomHeaderService, SwaggerCspRelaxingHeaderService>();
 
     if (env.IsDevelopment())
     {
@@ -64,6 +67,11 @@ try
     }
 
     var app = builder.Build();
+
+
+    app.UseSecurityHeaders(
+        SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment(),
+            configuration["AzureAd:Instance"]));
 
     if (env.IsDevelopment())
     {
@@ -81,10 +89,6 @@ try
         app.UseExceptionHandler("/Error");
         app.UseHsts();
     }
-
-    app.UseSecurityHeaders(
-        SecurityHeadersDefinitions.GetHeaderPolicyCollection(env.IsDevelopment(),
-            configuration["AzureAd:Instance"]));
 
     app.UseHttpsRedirection();
     app.UseStaticFiles();
