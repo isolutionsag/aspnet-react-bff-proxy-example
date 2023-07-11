@@ -1,11 +1,16 @@
 import axios, { AxiosInstance } from "axios";
+import { getCookie } from "../getCookie";
 
 export class HttpClient {
   private readonly axiosInstance: AxiosInstance;
 
-  constructor(xsrfToken: string) {
+  constructor() {
     this.axiosInstance = axios.create();
-    this.axiosInstance.defaults.headers.common["X-XSRF-TOKEN"] = xsrfToken;
+    this.axiosInstance.interceptors.request.use((config) => {
+      // eslint-disable-next-line no-param-reassign
+      config.headers["X-XSRF-TOKEN"] = getCookie("XSRF-RequestToken");
+      return config;
+    });
   }
 
   async get<TResponse, TParameters = unknown>(

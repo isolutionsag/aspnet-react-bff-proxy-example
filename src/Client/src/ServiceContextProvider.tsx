@@ -3,12 +3,9 @@ import { ServiceContext, ServiceContextContent } from "./ServiceContext";
 import { HttpClient } from "./services/HttpClient";
 import { TestService } from "./services/TestService";
 import { AuthService } from "./services/AuthService";
-import { getCookie } from "./getCookie";
-
-const xsrfToken = getCookie("XSRF-RequestToken");
 
 export const ServiceContextProvider = ({ children }: PropsWithChildren) => {
-  const httpClient = useMemo(() => new HttpClient(xsrfToken), []);
+  const httpClient = useMemo(() => new HttpClient(), []);
   const services: ServiceContextContent = useMemo(
     () => ({
       test: new TestService(httpClient),

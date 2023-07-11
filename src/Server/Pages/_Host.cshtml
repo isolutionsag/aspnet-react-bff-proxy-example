@@ -22,12 +22,13 @@
 
     var nonce = HttpContext.GetNonce();
 
+    // The nonce is passed to the client through the HTML to avoid sync issues between tabs
+    source = source.Replace("**REPLACE_THIS_VALUE_WITH_SAFE_NONCE**", nonce);
+
     var xsrf = antiForgery.GetAndStoreTokens(HttpContext);
     var requestToken = xsrf.RequestToken;
 
-    // could also inject nonce into html / meta tag
-
-    Response.Cookies.Append("CSP-Nonce", nonce, new CookieOptions() { HttpOnly = false, IsEssential = true, Secure = true, SameSite = SameSiteMode.Strict });
+    // The XSRF-Tokens are passed to the client through cookies, since we always want the most up-to-date cookies across all tabs
     Response.Cookies.Append("XSRF-RequestToken", requestToken ?? "", new CookieOptions() { HttpOnly = false, IsEssential = true, Secure = true, SameSite = SameSiteMode.Strict });
 }
 

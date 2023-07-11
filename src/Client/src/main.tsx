@@ -14,10 +14,13 @@ import createCache from "@emotion/cache";
 import { AuthContextProvider } from "./auth/AuthContextProvider";
 import { router } from "./router";
 import { ServiceContextProvider } from "./ServiceContextProvider";
-import { getCookie } from "./getCookie";
 
 // Get the nonce for emotion/MUI
-const nonce = getCookie("CSP-Nonce");
+const nonce = (
+  document.querySelector('meta[name="CSP-nonce"]') as unknown as {
+    content: string;
+  }
+)?.content;
 
 const cache = createCache({
   key: `mui-emotion-prefix`,
