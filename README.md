@@ -4,6 +4,29 @@ This repo contains a sample app for hosting a React client from an ASP.NET Core 
 
 This enables the use of unified security headers in development and production, and allows us to use cookie authentication, as you'd use with a Razor/MVC or Blazor Server app.
 
+## Points of Interest:
+
+- AAD Config:
+  - `ServiceCollectionExtension.cs` ~L43ff. Configures cookie auth
+- Dev Server Proxy:
+  - `Program.cs` ~L106ff
+  - `_Host.cshtml`
+- Security Headers + CSP with Nonce:
+  - `SecurityHeadersDefinitions.cs`
+- Reading the Nonce in Client app:
+  - `main.tsx`
+- CSP Workaround for Swagger:
+  - `SwaggerCspRelaxingHeaderService.cs`
+- XSRF/CSRF Mitigation with Synchronizer Pattern:
+  - `_Host.cshtml` - create tokens and pass then through cookies (one HTML-only, one not)
+  - `HttpClient.ts` - read request token from non-HTML-only cookie, add to header
+- Swagger with CSRF:
+  - `ServiceCollectionExtension.cs` ~L65ff
+  - `SwaggerHeaderFilter.cs` - automatically add antiforgery request token (check swagger, it's shown as a form field)
+- PWA:
+  - `vite.config.ts` - contains Vite-PWA config
+  - `service-worker.js` - basic offline support
+
 ## How to run
 
 ### development mode
